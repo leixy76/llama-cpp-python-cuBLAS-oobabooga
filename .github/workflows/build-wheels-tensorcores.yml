@@ -57,7 +57,7 @@ jobs:
         id: set-matrix
         run: |
           $matrix = @{
-              'os' = 'ubuntu-20.04', 'windows-latest'
+              'os' = 'ubuntu-20.04', 'windows-2022'
               'pyver' = "3.11", "3.10"
               'cuda' =  "11.8.0", "12.1.1"
               'avxver' = "AVX2", "AVX"
@@ -99,6 +99,10 @@ jobs:
         with:
           python-version: ${{ matrix.pyver }}
         
+      - name: Install VS2022 BuildTools 17.9.7
+        run: choco install -y visualstudio2022buildtools --version=117.9.7.0 --params "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --installChannelUri https://aka.ms/vs/17/release/180911598_-255012421/channel"
+        if: runner.os == 'Windows'
+
       - name: Setup Mamba
         uses: conda-incubator/setup-miniconda@v2.2.0
         with:
@@ -183,6 +187,13 @@ jobs:
           
       - name: Build Wheel
         run: |
+          # --- Spawn the VS shell
+          if ($IsWindows) {
+            Import-Module 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll'
+            Enter-VsDevShell -VsInstallPath 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools' -DevCmdArguments '-arch=x64 -host_arch=x64'
+            $env:DISTUTILS_USE_SDK=1
+          }
+
           $packageVersion = [version]$env:PCKGVER.TrimStart('v')
           $cudaVersion = $env:CUDAVER.Remove($env:CUDAVER.LastIndexOf('.')).Replace('.','')
           $env:CUDA_PATH = $env:CONDA_PREFIX

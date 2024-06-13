@@ -57,17 +57,17 @@ jobs:
         id: set-matrix
         run: |
           $matrix = @{
-              'os' = 'ubuntu-20.04', 'windows-latest'
+              'os' = 'ubuntu-20.04', 'windows-2022'
               'pyver' = "3.10", "3.11"
               # 'rocm' = '5.6.1'
               'avx' = "AVX", "AVX2"
               'rename' = '0', '1'
               'exclude' = @(
-                  @{'os' = 'windows-latest'}
-                  # @{'os' = 'windows-latest'},
-                  # @{'os' = 'windows-latest';'rocm' = '5.4.2'},
-                  # @{'os' = 'windows-latest';'rocm' = '5.5'},
-                  # @{'os' = 'windows-latest';'rocm' = '5.6.1'},
+                  @{'os' = 'windows-2022'}
+                  # @{'os' = 'windows-2022'},
+                  # @{'os' = 'windows-2022';'rocm' = '5.4.2'},
+                  # @{'os' = 'windows-2022';'rocm' = '5.5'},
+                  # @{'os' = 'windows-2022';'rocm' = '5.6.1'},
                   # @{'os' = 'ubuntu-20.04';'rocm' = '5.5.1'}
               )
           }

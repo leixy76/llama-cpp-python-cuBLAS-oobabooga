@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/build-wheels-oobabooga.yml
     with:
       version: ${{ inputs.version }}
-      config: 'os:windows-latest'
+      config: 'os:windows-2022'
 
   sleep_1:
     name: Sleep for 15 minutes
@@ -50,7 +50,7 @@ jobs:
     uses: ./.github/workflows/build-wheels-tensorcores.yml
     with:
       version: ${{ inputs.version }}
-      config: 'os:windows-latest'
+      config: 'os:windows-2022'
       
   sleep_3:
     name: Sleep for 15 minutes
